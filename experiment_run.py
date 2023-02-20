@@ -1,5 +1,6 @@
 import socket,time,sys
 from collections import Counter
+import copy
 
 PORT = 8080
 
@@ -232,7 +233,7 @@ def judge_multiple_maximum(weightDict):
     for k, v in weightDict.items():
         testList.append(v)
     result = has_multiple_maximum(testList)
-    print(result)
+    #print(result)
     return result
 
 def process_maxmum_send(weightDict,status):
@@ -242,7 +243,9 @@ def process_maxmum_send(weightDict,status):
     max_weight_key = [k for k, v in weightDict.items() if v == max_weight][0]
     status[max_weight_key] = True
     espNameKey = espNameDict[max_weight_key]
-    print(f"activate : {espNameKey}")
+    
+    #print(f"activate : {espNameKey}")
+    
     if espNameKey not in ACTIVATED_ESP32:
         ACTIVATED_ESP32.append(espNameKey)
     # activeAP(espNameKey)
@@ -255,7 +258,9 @@ def process_maxmum_send(weightDict,status):
             if espNameKey not in DEACTIVATED_ESP32:
                 DEACTIVATED_ESP32.append(espNameKey)
             deactivateEsp32NameText += f"{espNameKey}+"
-    print(f"deactivate : {deactivateEsp32NameText}")
+            
+    #print(f"deactivate : {deactivateEsp32NameText}")
+    
     # deactiveAP(deactivateEsp32NameText)
     return status
 
@@ -314,7 +319,7 @@ def check_not_true_device(weight,currentBattery,status,GROUP_NUM):
                         status = process_maxmum_send(weight_ddd,status)
                     else:
                         status = process_multiple_maxmum_send(weight_ddd,currentBattery,status)
-                    # print(status)
+                    print(status)
 
 def main():
     # activeAP("B+A2+A3+sA+sD")
@@ -325,21 +330,12 @@ def main():
     
     global DEACTIVATED_ESP32
     global ACTIVATED_ESP32
-    # B,A1,A2
-    hop1 = {}
-    status1 = {}
-    weight1 = {}
-    # A3,A4,sA,sB
-    hop2 = {}
-    status2 = {}
-    weight2 = {}
-    # sC, sD
-    hop3 = {}
-    status3 = {}
-    weight3 = {}
     
     hop = {}
+    
     status = {}
+    for espName in ESP32_NAME_LIST:
+        status[espName] = False
     weight = {}
     
     beforeActivated = []
@@ -378,101 +374,75 @@ def main():
             if battery > 0.0:
                 hop[espName] = battery
                 weight[espName] = weightCountDict[espNameDict[espName]]
+            else:
+                hop[espName] = battery
+                weight[espName] = 0
+                # batteryが0になったデバイスがACTIVATEDにあれば削除実行
+                if espNameDict[espName] in ACTIVATED_ESP32:
+                    print("ACTIVATED_ESP32から {espNameDict[espName]} を削除")
+                    ACTIVATED_ESP32.remove(espNameDict[espName])
             
-            # if espNameDict[espName] in ["A","B","C","D"] and battery > 0.0:
-            #     hop1[espName] = battery
-            #     weight1[espName] = weightCountDict[espNameDict[espName]]
-            # elif espNameDict[espName] in ["E","F","G","H","I"] and battery > 0.0:
-            #     hop2[espName] = battery
-            #     weight2[espName] = weightCountDict[espNameDict[espName]]
-            # elif espNameDict[espName] in ["J","K","L"] and battery > 0.0:
-            #     hop3[espName] = battery
-            #     weight3[espName] = weightCountDict[espNameDict[espName]]
-            
-            
-        
         print(weight)
         
-        # #  print(currentBattery)
-        # print(weight1)
-        # print(weight2)
-        # print(weight3)
-        # print("----------------------------------")
+        print("----------------------------------")
         
-    
-        # if not judge_multiple_maximum(weight1):
-        #     status1 = process_maxmum_send(weight1,status1)
-        # else:
-        #     status1 = process_multiple_maxmum_send(weight1,currentBattery,status1)
-        # #print(status1)
-        
-        # check_not_true_device(weight1,currentBattery,status1,1)
+        if not judge_multiple_maximum(weight):
+            status = process_maxmum_send(weight,status)
+        else:
+            status = process_multiple_maxmum_send(weight,currentBattery,status)
+        #print(status)
+        check_not_true_device(weight,currentBattery,status,1)
         
         
-        # if not judge_multiple_maximum(weight2):
-        #     status2 = process_maxmum_send(weight2,status2)
-        # else:
-        #     status2 = process_multiple_maxmum_send(weight2,currentBattery,status2)
-        # #print(status2)
-        
-        # check_not_true_device(weight2,currentBattery,status2,2)
-        
-        # if not judge_multiple_maximum(weight3):
-        #     status3 = process_maxmum_send(weight3,status3)
-        # else:
-        #     status3 = process_multiple_maxmum_send(weight3,currentBattery,status3)
-        # #print(status3)
-        
-        # check_not_true_device(weight3,currentBattery,status3,3)
-        
-        # if enableProcess:
-        #     enableProcess = False
-        #     print(ACTIVATED_ESP32)
-        #     print(DEACTIVATED_ESP32)
+        if enableProcess:
+            enableProcess = False
+            print(ACTIVATED_ESP32)
+            print(DEACTIVATED_ESP32)
             
-        #     print(f"""
-        #         ------ CURRENT STATUS ------
-        #     ACTIVATED   : {ACTIVATED_ESP32}
-        #     DEACTIVATED : {DEACTIVATED_ESP32}
-        #         """)
+            print(f"""
+                ------ CURRENT STATUS ------
+            ACTIVATED   : {ACTIVATED_ESP32}
+            DEACTIVATED : {DEACTIVATED_ESP32}
+                """)
             
-        #     common = set(ACTIVATED_ESP32) & set(DEACTIVATED_ESP32)
-        #     DEACTIVATED_ESP32 = [item for item in DEACTIVATED_ESP32 if item not in common]
+            common = set(ACTIVATED_ESP32) & set(DEACTIVATED_ESP32)
+            DEACTIVATED_ESP32 = [item for item in DEACTIVATED_ESP32 if item not in common]
             
-        #     uniqueToActivated = set(ACTIVATED_ESP32) - set(beforeActivated)
-        #     if uniqueToActivated:
-        #         print(f"起動デバイスに変化あり : {uniqueToActivated}")
-        #         text = ""
-        #         for uta in uniqueToActivated:
-        #             text += f"{uta}+"
-        #         # if activeEnable == False:
-        #         #     activeEnable = True
-        #         # else:
+            uniqueToActivated = set(ACTIVATED_ESP32) - set(beforeActivated)
+            # uniqueToActivated = set(beforeActivated) - set(ACTIVATED_ESP32)
+            if uniqueToActivated:
+                print(f"起動デバイスに変化あり : {uniqueToActivated}")
+                text = ""
+                for uta in uniqueToActivated:
+                    text += f"{uta}+"
+                # if activeEnable == False:
+                #     activeEnable = True
+                # else:
                 
-        #         #activeAP(text)
+                #activeAP(text)
                 
-        #     else:
-        #         print("起動デバイス：変化なし")
-        #     print("----------")
+            else:
+                print("起動デバイス：変化なし")
+            print("----------")
             
-        #     time.sleep(5)
+            time.sleep(5)
             
-        #     uniqueToDeactivated = set(DEACTIVATED_ESP32) - set(beforeDeactivated)
-        #     if uniqueToDeactivated:
-        #         print(f"停止デバイスに変化あり : {uniqueToDeactivated}")
-        #         text = ""
-        #         for uta in uniqueToDeactivated:
-        #             text += f"{uta}+"
-        #         if deactiveEnable == False:
-        #             deactiveEnable = True
+            uniqueToDeactivated = set(DEACTIVATED_ESP32) - set(beforeDeactivated)
+            if uniqueToDeactivated:
+                print(f"停止デバイスに変化あり : {uniqueToDeactivated}")
+                text = ""
+                for uta in uniqueToDeactivated:
+                    text += f"{uta}+"
+                if deactiveEnable == False:
+                    deactiveEnable = True
                     
-        #             #deactiveAP(text)
+                    #deactiveAP(text)
                     
-        #     else:
-        #         print("停止デバイス：変化なし")
+            else:
+                print("停止デバイス：変化なし")
             
-        #     beforeActivated = ACTIVATED_ESP32
-        #     beforeDeactivated = DEACTIVATED_ESP32
+            beforeActivated = copy.deepcopy(ACTIVATED_ESP32)
+            beforeDeactivated = copy.deepcopy(DEACTIVATED_ESP32)
         
         
         for i in range(10):
