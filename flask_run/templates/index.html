@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <title>Test</title>
+        <meta name="viewport" content="width=device-width">
+    </head>
+    <body>
+        <h1>sugi-master mainpage</h1>
+        <h1>Links to Subdirectories</h1>
+  <ul>
+    {% for route in routes %}
+    <li><a href='{{ route }}'>{{ route }}</a></li>
+    {% endfor %}
+  </ul>
+    </body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      function refreshPage() {
+        location.reload();
+      }
+      setInterval(refreshPage, 2000);
+    </script>
+    <style>
+      // 緑色と赤色のクラスを定義する
+      .green {
+        color: white;
+        background-color: green;
+      }
+      .red {
+        color: white;
+        background-color: red;
+      }
+      // テーブルのスタイルを設定する
+      table {
+        border-collapse: collapse;
+        width: 80%;
+        margin: auto;
+      }
+      td, th {
+        text-align: center;
+        padding: 10px;
+        border: 1px solid black;
+      }
+      th {
+        font-weight: bold;
+        background-color: lightgray;
+      }
+    </style>
+  </head>
+  <body>
+    <form action="/init_status">
+      <input type="submit" value="Reset status">
+    </form>
+  <table>
+    <tr>
+      <th>ESP32</th>
+      <th>CONNECTION</th>
+      <th>COMPLETE</th>
+    </tr>
+    {% for key, value in CHECK_CONNECTION.items() %}
+    <tr>
+      <td>{{ key}}  ({{ espNameDict[key] }})</td>
+      <td class="{% if value == True %}green{% else %}red{% endif %}" id="{{ key }}-connection">{{ value }}</td>
+      <td class="{% if CHECK_COMPLETED[key] == True %}green{% else %}red{% endif %}" id="{{ key }}-complete">{{ CHECK_COMPLETED[key] }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  <h2>CDSL接続状況</h2>
+  <table>
+    <tr>
+      <th>ESP32</th>
+      <th>CDSL CONNECTION</th>
+    </tr>
+    {% for key,value in CHECK_CDSL_NETWORK_CONNECTED.items() %}
+    <tr>
+      <td>{{ key }}</td>
+      <td class="{% if value == True %}green{% else %}red{% endif %}" >{{ value }}</td>
+    </tr>
+    {% endfor %}
+  </talbe>
+</body>
+</html>

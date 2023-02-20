@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    <script>
+      function refreshPage() {
+        location.reload();
+      }
+      setInterval(refreshPage, 10000);
+    </script>
+  </head>
+  <body>
+    <canvas id="myChart"></canvas>
+    <script>
+      var ctx = document.getElementById('myChart').getContext('2d');
+      var datasets = [];
+      var colorArr = ['rgba(255, 99, 132, 0.6)',
+      'rgba(255, 200, 132, 0.6)',
+      'rgba(100, 200, 132, 0.6)',
+      'rgba(255, 100, 132, 0.6)',
+      'rgba(255, 200, 100, 0.6)',
+      'rgba(255, 100, 200, 0.6)',
+      'rgba(100, 100, 200, 0.6)',
+      'rgba(100, 255, 200, 0.6)',
+      'rgba(200, 100, 255, 0.6)',
+      'rgba(200, 255, 100, 0.6)',
+      'rgba(255, 200, 255, 0.6)'];
+      var colorIdx = 0;
+      {% for key, value in data.items() %}
+      datasets.push({
+          label: '{{ key }}',
+          data: {{ value|tojson|safe }},
+          backgroundColor: 'rgba(0, 0, 0, 0)',
+          //backgroundColor: rgba(255, 255, 255, 0.0),
+          borderColor: colorArr[colorIdx],
+          borderWidth: 2
+      });
+      colorIdx++;
+      {% endfor %}
+
+      var myChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+              labels: {{ labels|tojson|safe }},
+              datasets: datasets
+          },
+          options: {
+              scales: {
+                  y: {
+                      beginAtZero: true
+                  }
+              }
+          }
+      });
+    </script>
+  </body>
+</html>
