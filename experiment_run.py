@@ -338,6 +338,10 @@ def main():
     status3 = {}
     weight3 = {}
     
+    hop = {}
+    status = {}
+    weight = {}
+    
     beforeActivated = []
     beforeDeactivated = []
     weightCountDict = groups_counter()
@@ -351,7 +355,7 @@ def main():
     
     #sD_sF_ap_deactive()
     
-    time.sleep(5)
+    time.sleep(1)
     while True:
         timeDict,dataDict,timeStampDict = getData()
         
@@ -370,21 +374,25 @@ def main():
             if battery <= 0.0 and espName not in deathDevice:
                 deathDevice.append(espName)
                 enableProcess = True
-            if espNameDict[espName] in ["A","B","C","D"] and battery > 0.0:
-                hop1[espName] = battery
-                weight1[espName] = weightCountDict[espNameDict[espName]]
-            elif espNameDict[espName] in ["E","F","G","H","I"] and battery > 0.0:
-                hop2[espName] = battery
-                weight2[espName] = weightCountDict[espNameDict[espName]]
-            elif espNameDict[espName] in ["J","K","L"] and battery > 0.0:
-                hop3[espName] = battery
-                weight3[espName] = weightCountDict[espNameDict[espName]]
+                
+            if battery > 0.0:
+                hop[espName] = battery
+                weight[espName] = weightCountDict[espNameDict[espName]]
+            
+            # if espNameDict[espName] in ["A","B","C","D"] and battery > 0.0:
+            #     hop1[espName] = battery
+            #     weight1[espName] = weightCountDict[espNameDict[espName]]
+            # elif espNameDict[espName] in ["E","F","G","H","I"] and battery > 0.0:
+            #     hop2[espName] = battery
+            #     weight2[espName] = weightCountDict[espNameDict[espName]]
+            # elif espNameDict[espName] in ["J","K","L"] and battery > 0.0:
+            #     hop3[espName] = battery
+            #     weight3[espName] = weightCountDict[espNameDict[espName]]
             
             
-            
-            
-            
-            
+        
+        print(weight)
+        
         # #  print(currentBattery)
         # print(weight1)
         # print(weight2)
@@ -467,10 +475,10 @@ def main():
         #     beforeDeactivated = DEACTIVATED_ESP32
         
         
-        # for i in range(10):
-        #     print(f"\r time : {i}",end="")
-        #     time.sleep(1)
-        # print("\n")
+        for i in range(10):
+            print(f"\r time : {i}",end="")
+            time.sleep(1)
+        print("\n")
         
         
 
