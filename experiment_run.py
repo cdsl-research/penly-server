@@ -380,92 +380,97 @@ def main():
                 hop3[espName] = battery
                 weight3[espName] = weightCountDict[espNameDict[espName]]
             
-        #  print(currentBattery)
-        print(weight1)
-        print(weight2)
-        print(weight3)
-        print("----------------------------------")
+            
+            
+            
+            
+            
+        # #  print(currentBattery)
+        # print(weight1)
+        # print(weight2)
+        # print(weight3)
+        # print("----------------------------------")
         
     
-        if not judge_multiple_maximum(weight1):
-            status1 = process_maxmum_send(weight1,status1)
-        else:
-            status1 = process_multiple_maxmum_send(weight1,currentBattery,status1)
-        #print(status1)
+        # if not judge_multiple_maximum(weight1):
+        #     status1 = process_maxmum_send(weight1,status1)
+        # else:
+        #     status1 = process_multiple_maxmum_send(weight1,currentBattery,status1)
+        # #print(status1)
         
-        check_not_true_device(weight1,currentBattery,status1,1)
+        # check_not_true_device(weight1,currentBattery,status1,1)
         
         
-        if not judge_multiple_maximum(weight2):
-            status2 = process_maxmum_send(weight2,status2)
-        else:
-            status2 = process_multiple_maxmum_send(weight2,currentBattery,status2)
-        #print(status2)
+        # if not judge_multiple_maximum(weight2):
+        #     status2 = process_maxmum_send(weight2,status2)
+        # else:
+        #     status2 = process_multiple_maxmum_send(weight2,currentBattery,status2)
+        # #print(status2)
         
-        check_not_true_device(weight2,currentBattery,status2,2)
+        # check_not_true_device(weight2,currentBattery,status2,2)
         
-        if not judge_multiple_maximum(weight3):
-            status3 = process_maxmum_send(weight3,status3)
-        else:
-            status3 = process_multiple_maxmum_send(weight3,currentBattery,status3)
-        #print(status3)
+        # if not judge_multiple_maximum(weight3):
+        #     status3 = process_maxmum_send(weight3,status3)
+        # else:
+        #     status3 = process_multiple_maxmum_send(weight3,currentBattery,status3)
+        # #print(status3)
         
-        check_not_true_device(weight3,currentBattery,status3,3)
+        # check_not_true_device(weight3,currentBattery,status3,3)
         
-        if enableProcess:
-            enableProcess = False
-            print(ACTIVATED_ESP32)
-            print(DEACTIVATED_ESP32)
+        # if enableProcess:
+        #     enableProcess = False
+        #     print(ACTIVATED_ESP32)
+        #     print(DEACTIVATED_ESP32)
             
-            print(f"""
-                ------ CURRENT STATUS ------
-            ACTIVATED   : {ACTIVATED_ESP32}
-            DEACTIVATED : {DEACTIVATED_ESP32}
-                """)
+        #     print(f"""
+        #         ------ CURRENT STATUS ------
+        #     ACTIVATED   : {ACTIVATED_ESP32}
+        #     DEACTIVATED : {DEACTIVATED_ESP32}
+        #         """)
             
-            common = set(ACTIVATED_ESP32) & set(DEACTIVATED_ESP32)
-            DEACTIVATED_ESP32 = [item for item in DEACTIVATED_ESP32 if item not in common]
+        #     common = set(ACTIVATED_ESP32) & set(DEACTIVATED_ESP32)
+        #     DEACTIVATED_ESP32 = [item for item in DEACTIVATED_ESP32 if item not in common]
             
-            uniqueToActivated = set(ACTIVATED_ESP32) - set(beforeActivated)
-            if uniqueToActivated:
-                print(f"起動デバイスに変化あり : {uniqueToActivated}")
-                text = ""
-                for uta in uniqueToActivated:
-                    text += f"{uta}+"
-                # if activeEnable == False:
-                #     activeEnable = True
-                # else:
+        #     uniqueToActivated = set(ACTIVATED_ESP32) - set(beforeActivated)
+        #     if uniqueToActivated:
+        #         print(f"起動デバイスに変化あり : {uniqueToActivated}")
+        #         text = ""
+        #         for uta in uniqueToActivated:
+        #             text += f"{uta}+"
+        #         # if activeEnable == False:
+        #         #     activeEnable = True
+        #         # else:
                 
-                #activeAP(text)
+        #         #activeAP(text)
                 
-            else:
-                print("起動デバイス：変化なし")
-            print("----------")
+        #     else:
+        #         print("起動デバイス：変化なし")
+        #     print("----------")
             
-            time.sleep(5)
+        #     time.sleep(5)
             
-            uniqueToDeactivated = set(DEACTIVATED_ESP32) - set(beforeDeactivated)
-            if uniqueToDeactivated:
-                print(f"停止デバイスに変化あり : {uniqueToDeactivated}")
-                text = ""
-                for uta in uniqueToDeactivated:
-                    text += f"{uta}+"
-                if deactiveEnable == False:
-                    deactiveEnable = True
+        #     uniqueToDeactivated = set(DEACTIVATED_ESP32) - set(beforeDeactivated)
+        #     if uniqueToDeactivated:
+        #         print(f"停止デバイスに変化あり : {uniqueToDeactivated}")
+        #         text = ""
+        #         for uta in uniqueToDeactivated:
+        #             text += f"{uta}+"
+        #         if deactiveEnable == False:
+        #             deactiveEnable = True
                     
-                    #deactiveAP(text)
+        #             #deactiveAP(text)
                     
-            else:
-                print("停止デバイス：変化なし")
+        #     else:
+        #         print("停止デバイス：変化なし")
             
-            beforeActivated = ACTIVATED_ESP32
-            beforeDeactivated = DEACTIVATED_ESP32
+        #     beforeActivated = ACTIVATED_ESP32
+        #     beforeDeactivated = DEACTIVATED_ESP32
         
         
-        for i in range(10):
-            print(f"\r time : {i}",end="")
-            time.sleep(1)
-        print("\n")
+        # for i in range(10):
+        #     print(f"\r time : {i}",end="")
+        #     time.sleep(1)
+        # print("\n")
         
         
 
