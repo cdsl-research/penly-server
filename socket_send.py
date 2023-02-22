@@ -194,7 +194,8 @@ def main():
         sendingEspId = choiceESP32ID()
         txDict = {
             "id_origin" : "server",
-            "command_origin" : "experiment_start"
+            "command_origin" : "experiment_start",
+            "to" : sendingEspId
         }
     for k ,v in txDict.items():
         tx += f"&{k}={v}"
