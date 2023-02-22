@@ -319,7 +319,7 @@ def check_not_true_device(weight,currentBattery,status,GROUP_NUM):
                         status = process_maxmum_send(weight_ddd,status)
                     else:
                         status = process_multiple_maxmum_send(weight_ddd,currentBattery,status)
-                    print(status)
+                    #print(status)
 
 def main():
     # activeAP("B+A2+A3+sA+sD")
@@ -419,7 +419,7 @@ def main():
                 #     activeEnable = True
                 # else:
                 
-                #activeAP(text)
+                activeAP(text)
                 
             else:
                 print("起動デバイス：変化なし")
@@ -436,7 +436,7 @@ def main():
                 if deactiveEnable == False:
                     deactiveEnable = True
                     
-                    #deactiveAP(text)
+                    deactiveAP(text)
                     
             else:
                 print("停止デバイス：変化なし")

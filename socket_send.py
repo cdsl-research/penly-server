@@ -127,6 +127,7 @@ def main():
     5. reset_battery
     6. startAP
     7. stopAP
+    8. specific experiment start
     """
 
     print(choiceText)
@@ -188,7 +189,13 @@ def main():
             "command_origin" : "stopAP",
             "to" :sendingEspId
         }
-
+    
+    elif choiceNumber == 8:
+        sendingEspId = choiceESP32ID()
+        txDict = {
+            "id_origin" : "server",
+            "command_origin" : "experiment_start"
+        }
     for k ,v in txDict.items():
         tx += f"&{k}={v}"
         
