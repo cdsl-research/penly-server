@@ -142,7 +142,7 @@ def graph_generator():
     plt.ylabel('Value', fontsize=12, color='black')
 
     # Save the graph with a high-resolution DPI (dots per inch)
-    plt.savefig('graph3.png', dpi=300)
+    plt.savefig('graph4.png', dpi=300)
 
 
 
