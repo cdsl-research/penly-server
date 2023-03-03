@@ -451,8 +451,39 @@ def main():
         print("\n")
         
         
+        
+
+
+### デバッグ用
+def exist_debug():
+    deactiveAP("A+C+E+G+I+J+L")
+    for i in range(180):
+        print(f"\r time : {i}",end="")
+        time.sleep(1)
+    print("\n")
+    
+    while True:
+
+        activeAP("B+D+F+H+K")
+        time.sleep(5)
+        deactiveAP("A+C+E+G+I+J+L")
+        for i in range(180):
+            print(f"\r time : {i}",end="")
+            time.sleep(1)
+        print("\n")
+        activeAP("A+C+E+G+I+J+L")
+        time.sleep(5)
+        deactiveAP("B+D+F+H+K")
+        for i in range(180):
+            print(f"\r time : {i}",end="")
+            time.sleep(1)
+        print("\n")
+        
+        
 
 if __name__ == '__main__':
-    main()
+    # main()
+    exist_debug()
+    
     
     
