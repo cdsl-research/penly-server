@@ -465,14 +465,14 @@ def exist_debug():
     while True:
 
         activeAP("B+D+F+H+K")
-        time.sleep(5)
+        time.sleep(10)
         deactiveAP("A+C+E+G+I+J+L")
         for i in range(180):
             print(f"\r time : {i}",end="")
             time.sleep(1)
         print("\n")
         activeAP("A+C+E+G+I+J+L")
-        time.sleep(5)
+        time.sleep(10)
         deactiveAP("B+D+F+H+K")
         for i in range(180):
             print(f"\r time : {i}",end="")
